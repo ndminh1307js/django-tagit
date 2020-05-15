@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Template</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navigation">
+    <a href="/"><span class="navigation__logo">T</span></a>
+
+    <form method="get">
+      <input type="text" name="search">
+      <button type="submit">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </button>
+    </form>
+
+    <div class="navigation__profile">
+      <img src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png" alt="avatar">
+      <p>Ngo Dang Minh</p>
+    </div>
+
+    <div class="navigation__option">
+      <i class="fa fa-caret-down" aria-hidden="true"></i>
+      <div>
+        <ul>
+          <li><a href="#">Change password</a></li>
+          <li><a href="#">Edit Profile</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="sidebar">
+      <a class="sidebar__profile" href="#">
+        <img src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png" alt="avatar">
+        <p>Ngo Dang Minh</p>
+      </a>
+
+      <div class="sidebar__list">
+        <ul>
+          <li><a href="#"><i class="far fa-newspaper"></i> News Feed</a></li>
+          <li><a href="#"><i class="far fa-bell"></i> Notifications (3)</a></li>
+          <li><a href="#"><i class="far fa-envelope"></i> Inboxes (2)</a></li>
+          <li><a href="#"><i class="fab fa-slack-hash"></i> Hashtags</a></li>
+          <li><a href="#"><i class="fas fa-users"></i> Friends</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content">
+     <div class="post">
+          <a class="post__user" href="#">
+            <img src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png" alt="avatar" class="post__user--img">
+            <p class="post__user--name">Donald Trump</p>
+          </a>
+
+          <span class="post__datetime">2 minutes ago</span>
+          
+          <p class="post__caption">
+            Covid-19 is just a common flu. Every year in USA, there are about 27,000 people that die of flu.
+            Think about that, carefully!
+          </p>
+
+          <img
+            src="https://baoquocte.vn/stores/news_dataimages/hoangha/032020/12/06/cap-nhat-7h-ngay-123-dich-covid-19-tang-manh-o-my-chau-au-tong-thong-trump-can-nhac-kha-nang-phat-bieu-ve-dai-dich-pho-tong-thong-iran-nhiem-benh.jpg"
+            class="post__img"
+          />
+
+          <div class="post__reaction">
+            <div class="post__reaction--item">
+              <i class="fas fa-heart"></i>
+              23k
+            </div>
+
+            <div class="post__reaction--item">
+              <i class="fas fa-comment"></i>
+              2k
+            </div>
+          </div>
+
+          <div class="post__comments">
+            <div class="post__comments--add">
+              <form method="post">
+                <textarea name="comment" placeholder="Write your comment"></textarea>
+                <input type="submit" class="btn btn--primary" value="Send">
+              </form>
+            </div>
+
+            <div class="post__comments--list">
+              <p>Comments</p>
+              <div class="post__comments--item">
+                <a class="post__user" href="#">
+                  <img
+                    src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png"
+                    class="post__user--img"
+                  />
+                  <p class="post__user--name">Donald Trump</p>
+                </a>
+                <p>It sucks, Mr.President. That is a dangerous flu. We need more information to decide</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </main>
+
+  <script src="https://kit.fontawesome.com/d791987f9f.js" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    const option = document.querySelector('.navigation__option i');
+    const optionList = document.querySelector('.navigation__option div');
+    
+    option.addEventListener('click', function() {
+      if (option.classList.contains('open')) {
+        option.classList.remove('open');
+        optionList.style.display = 'none';
+      } else {
+        option.classList.add('open');
+        optionList.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
