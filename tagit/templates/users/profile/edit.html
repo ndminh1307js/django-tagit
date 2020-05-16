@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Change My Profile{% endblock %}
+
+{% block content %}
+  <p class="heading__primary">Change Your Profile</p>
+  <form method="post" enctype="multipart/form-data" class="form">
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    {% with profile_photo_url=request.user.profile.photo.url %}
+      <img src="{{ profile_photo_url }}">
+    {% endwith %}
+    
+    {% csrf_token %}
+    <input type="submit" class="btn btn--primary" value="Save">
+  </form>
+{% endblock %}

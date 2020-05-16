@@ -1,10 +1,12 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
-from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View, FormView
 from django.conf import settings
 
-from .forms import UserLoginForm, UserRegistrationForm
+from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
+from .models import Profile
 
 
 class LoginView(View):
@@ -30,7 +32,7 @@ class LoginView(View):
         return render(request, 'users/registration/login.html', {'form': form})
 
 
-class RegistrationView(View):
+class RegistrationView(FormView):
     def post(self, request):
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
@@ -40,12 +42,46 @@ class RegistrationView(View):
             new_user.set_password(user_form.cleaned_data['password'])
             # Save the user object
             new_user.save()
+            Profile.objects.create(user=new_user)
             return render(request,
                           'users/registration/register_done.html',
                           {'new_user': new_user})
 
     def get(self, request):
+        form = UserLoginForm()
         user_form = UserRegistrationForm()
         return render(request,
                       'users/registration/register.html',
-                      {'user_form': user_form})
+                      {'user_form': user_form,
+                       'form': form})
+
+
+class UserEditView(LoginRequiredMixin, FormView):
+    template_name = 'users/profile/edit.html'
+
+    def post(self, request):
+        user_form = UserEditForm(instance=request.user,
+                                 data=request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile,
+                                       data=request.POST,
+                                       files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+
+        return render(request,
+                      self.template_name,
+                      {'user_form': user_form,
+                       'profile_form': profile_form})
+
+    def get(self, request):
+        user_form = UserEditForm(instance=request.user)
+        try:
+            profile_form = ProfileEditForm(instance=request.user.profile)
+        except:
+            profile_form = ProfileEditForm()
+
+        return render(request,
+                      self.template_name,
+                      {'user_form': user_form,
+                       'profile_form': profile_form})

@@ -14,7 +14,7 @@
     <a href="/"><span class="header__logo">TagIt</span></a>
     {% if not request.user.is_authenticated %}
     <div class="login-form">
-      <form method="post">
+      <form method="post" action="{% url 'login' %}">
         {{ form.as_p }}
         {% csrf_token %}
         <input type="submit" value="Login">

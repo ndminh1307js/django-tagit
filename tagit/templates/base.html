@@ -1,11 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Media Template</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <title>{% block title %}{% endblock title %}</title>
 </head>
 <body>
   <nav class="navigation">
@@ -19,17 +21,17 @@
     </form>
 
     <div class="navigation__profile">
-      <img src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png" alt="avatar">
-      <p>Ngo Dang Minh</p>
+      <img src="{{ request.user.profile.photo.url }}" alt="avatar">
+      <p>{{ request.user.get_full_name }}</p>
     </div>
 
     <div class="navigation__option">
       <i class="fa fa-caret-down" aria-hidden="true"></i>
       <div>
         <ul>
-          <li><a href="#">Change password</a></li>
-          <li><a href="#">Edit Profile</a></li>
-          <li><a href="#">Logout</a></li>
+          <li><a href="{% url 'password_change' %}">Change password</a></li>
+          <li><a href="{% url 'edit' %}">Edit Profile</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -38,8 +40,8 @@
   <main id="main">
     <div class="sidebar">
       <a class="sidebar__profile" href="#">
-        <img src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png" alt="avatar">
-        <p>Ngo Dang Minh</p>
+        <img src="{{ request.user.profile.photo.url }}" alt="avatar">
+        <p>{{ request.user.get_full_name }}</p>
       </a>
 
       <div class="sidebar__list">
@@ -54,59 +56,8 @@
     </div>
 
     <div class="content">
-     <div class="post">
-          <a class="post__user" href="#">
-            <img src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png" alt="avatar" class="post__user--img">
-            <p class="post__user--name">Donald Trump</p>
-          </a>
-
-          <span class="post__datetime">2 minutes ago</span>
-          
-          <p class="post__caption">
-            Covid-19 is just a common flu. Every year in USA, there are about 27,000 people that die of flu.
-            Think about that, carefully!
-          </p>
-
-          <img
-            src="https://baoquocte.vn/stores/news_dataimages/hoangha/032020/12/06/cap-nhat-7h-ngay-123-dich-covid-19-tang-manh-o-my-chau-au-tong-thong-trump-can-nhac-kha-nang-phat-bieu-ve-dai-dich-pho-tong-thong-iran-nhiem-benh.jpg"
-            class="post__img"
-          />
-
-          <div class="post__reaction">
-            <div class="post__reaction--item">
-              <i class="fas fa-heart"></i>
-              23k
-            </div>
-
-            <div class="post__reaction--item">
-              <i class="fas fa-comment"></i>
-              2k
-            </div>
-          </div>
-
-          <div class="post__comments">
-            <div class="post__comments--add">
-              <form method="post">
-                <textarea name="comment" placeholder="Write your comment"></textarea>
-                <input type="submit" class="btn btn--primary" value="Send">
-              </form>
-            </div>
-
-            <div class="post__comments--list">
-              <p>Comments</p>
-              <div class="post__comments--item">
-                <a class="post__user" href="#">
-                  <img
-                    src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png"
-                    class="post__user--img"
-                  />
-                  <p class="post__user--name">Donald Trump</p>
-                </a>
-                <p>It sucks, Mr.President. That is a dangerous flu. We need more information to decide</p>
-              </div>
-            </div>
-          </div>
-        </div>
+     {% block content %}
+     {% endblock %}
     </div>
   </main>
 

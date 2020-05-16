@@ -142,7 +142,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'tagit', 'static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Redirect URL
 LOGIN_URL = '/users/login/'
+
+# Custom authentication
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]

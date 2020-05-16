@@ -1,0 +1,13 @@
+{% extends "users/base.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block content %}
+  <p class="heading__primary">Create an account</p>
+  <p class="heading__description">Please use the form below to create a new account</p>
+  <form method="post" class="form">
+    {{ user_form.as_p }}
+    {% csrf_token %}
+    <input type="submit" class="btn btn--primary" value="Create my account">
+  </form>
+{% endblock %}

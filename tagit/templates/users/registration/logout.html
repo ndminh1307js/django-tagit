@@ -1,0 +1,11 @@
+{% extends "users/base.html" %}
+
+{% block title %}You have been just logged out{% endblock %}
+
+{% block content %}
+  <p class="heading__primary">Logged Out</p>
+  <p class="heading__description">
+    You can <a href="{% url 'login' %}">re-login</a>
+  </p>
+  <a href="/" class="btn btn--primary">Back to homepage</a>
+{% endblock %}
