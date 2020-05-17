@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Your newsfeed{% endblock %}
+
+{% block content %}
+  <div class="newsfeed">
+    {% for post in posts %}
+      {% with total_likes=post.users_like.count %}
+      <div class="post">
+        <a class="post__user" href="#">
+          <img src="{{ user.profile.photo.url }}" alt="avatar" class="post__user--img">
+          <p class="post__user--name">{{ user.get_full_name }}</p>
+        </a>
+
+        <span class="post__datetime">{{ post.created|timesince }} ago</span>
+        
+        <p class="post__caption">
+          {{ post.caption }}
+        </p>
+
+        <img
+          src="{{ post.image.url }}"
+          class="post__img"
+        />
+
+        <div class="post__reaction">
+          <div class="post__reaction--item">
+            <i class="fas fa-heart"></i>
+            {{ total_likes }}
+          </div>
+
+          <div class="post__reaction--item">
+            <i class="fas fa-comment"></i>
+            2k
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+    {% empty %}
+    No posts
+    {% endfor %}
+  </div>
+{% endblock %}

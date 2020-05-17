@@ -20,7 +20,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('tagit.apps.users.urls'))
+    path('users/', include('tagit.apps.users.urls')),
+    path('posts/', include('tagit.apps.posts.urls')),
 ]
 
 if settings.DEBUG:
