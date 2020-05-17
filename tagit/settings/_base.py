@@ -152,4 +152,5 @@ LOGIN_URL = '/users/login/'
 # Custom authentication
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'tagit.apps.users.authentication.EmailAuthBackend'
 ]
