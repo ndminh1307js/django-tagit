@@ -56,6 +56,18 @@
     </div>
 
     <div class="content">
+      {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li class="messages__{{ message.tags }}">
+        {{ message|safe }}
+        <a href="#" class="messages__close">
+          <i class="fas fa-times"></i>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
      {% block content %}
      {% endblock %}
     </div>

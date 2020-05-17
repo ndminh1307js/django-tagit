@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, FormView
 from django.conf import settings
+from django.contrib import messages
 
 from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import Profile
@@ -20,7 +21,7 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect('/newfeeds')
+                    return HttpResponseRedirect('/users/edit')
                 else:
                     return HttpResponse('Inactive user')
             else:
@@ -68,6 +69,9 @@ class UserEditView(LoginRequiredMixin, FormView):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            messages.success(request, 'Profile updated successfully')
+        else:
+            messages.error(request, 'Error updating your profile')
 
         return render(request,
                       self.template_name,

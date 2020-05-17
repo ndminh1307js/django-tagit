@@ -67,9 +67,9 @@ a {
     background-color: #006064;
     color: #fff; }
   .btn--danger {
-    background-color: #d32f2f;
+    background-color: #8e0000;
     color: #fff;
-    border: 2px solid #d32f2f; }
+    border: 2px solid #8e0000; }
   .btn--outline {
     background-color: #fff;
     color: #006064; }
@@ -167,6 +167,28 @@ a {
     font-size: 1.2rem;
     text-decoration: none;
     color: #fff; }
+
+.messages {
+  list-style-type: none;
+  width: 100%;
+  margin-bottom: 2rem; }
+  .messages li {
+    padding: 1rem 2rem;
+    color: #fff;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center; }
+    .messages li:not(:last-child) {
+      margin-bottom: 1rem; }
+  .messages__error {
+    background-color: #8e0000; }
+  .messages__success {
+    background-color: #006064; }
+  .messages__close {
+    margin-left: auto; }
+  .messages__close i {
+    color: #fff;
+    font-size: 1.8rem; }
 
 .newpost {
   display: flex;
