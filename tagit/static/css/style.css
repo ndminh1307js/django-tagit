@@ -275,6 +275,8 @@ a {
   .post__reaction--item i {
     font-size: 2rem;
     margin-right: 2rem; }
+  .post__reaction--liked {
+    color: #8e0000 !important; }
   .post__comments {
     display: flex;
     flex-direction: column; }

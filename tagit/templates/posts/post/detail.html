@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load thumbnail %}
 
 {% block title %}{{ post.caption }}{% endblock %}
 
@@ -18,7 +19,7 @@
 
     {% if post.image %}
       <img
-        src="{{ post.image.url }}"
+        src="{% thumbnail post.image 640x480 crop %}"
         class="post__img"
       />
     {% endif %}

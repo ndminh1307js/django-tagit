@@ -45,12 +45,12 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-
+    'easy_thumbnails',
 ]
 
 LOCAL_APPS = [
     'tagit.apps.users',
-    'tagit.apps.posts'
+    'tagit.apps.posts',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
