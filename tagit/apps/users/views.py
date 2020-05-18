@@ -10,9 +10,10 @@ from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEdi
 from .models import Profile
 
 
-class LoginView(View):
+class AuthenticationView(FormView):
     def post(self, request):
         form = UserLoginForm(request.POST)
+        user_form = UserRegistrationForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             user = authenticate(request,
@@ -24,19 +25,7 @@ class LoginView(View):
                     return HttpResponseRedirect('/users/edit')
                 else:
                     return HttpResponse('Inactive user')
-            else:
-                return HttpResponseRedirect(settings.REDIRECT_LOGIN_URL)
-        return render(request, 'users/registration/login.html', {'form': form})
-
-    def get(self, request):
-        form = UserLoginForm()
-        return render(request, 'users/registration/login.html', {'form': form})
-
-
-class RegistrationView(FormView):
-    def post(self, request):
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
+        elif user_form.is_valid():
             # Create a new object but not saving it yet
             new_user = user_form.save(commit=False)
             # Set the chosen password
@@ -52,7 +41,7 @@ class RegistrationView(FormView):
         form = UserLoginForm()
         user_form = UserRegistrationForm()
         return render(request,
-                      'users/registration/register.html',
+                      'users/registration/auth.html',
                       {'user_form': user_form,
                        'form': form})
 

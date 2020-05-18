@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.caption }}{% endblock %}
+
+{% block content %}
+  {% with total_likes=post.users_like.count %}
+  <div class="post">
+    <a class="post__user" href="#">
+      <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
+      <p class="post__user--name">{{ post.user.get_full_name }}</p>
+    </a>
+
+    <span class="post__datetime">{{ post.created|timesince }} ago</span>
+    
+    <p class="post__caption">
+      {{ post.caption }}
+    </p>
+
+    {% if post.image %}
+      <img
+        src="{{ post.image.url }}"
+        class="post__img"
+      />
+    {% endif %}
+
+    <div class="post__reaction">
+      <div class="post__reaction--item">
+        <i class="fas fa-heart"></i>
+        {{ total_likes }}
+      </div>
+
+      <div class="post__reaction--item">
+        <i class="fas fa-comment"></i>
+        2k
+      </div>
+    </div>
+
+    <div class="post__comments">
+      <div class="post__comments--add">
+        <form method="post">
+          <textarea name="comment" placeholder="Write your comment"></textarea>
+          <input type="submit" class="btn btn--primary" value="Send">
+        </form>
+      </div>
+
+      <div class="post__comments--list">
+        <p>Comments</p>
+        <div class="post__comments--item">
+          <a class="post__user" href="#">
+            <img
+              src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png"
+              class="post__user--img"
+            />
+            <p class="post__user--name">Donald Trump</p>
+          </a>
+          <p>It sucks, Mr.President. That is a dangerous flu. We need more information to decide</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+{% endblock %}

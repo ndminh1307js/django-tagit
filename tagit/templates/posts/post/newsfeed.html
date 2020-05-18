@@ -3,13 +3,23 @@
 {% block title %}Your newsfeed{% endblock %}
 
 {% block content %}
+  <div class="newpost">
+    <p class="heading__primary">Add New Post</p>
+    <form method="post" enctype="multipart/form-data">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="submit" value="Post" class="btn btn--primary">
+    </form>
+  </div>
+
   <div class="newsfeed">
+    <p class="heading__primary">Your newsfeed</p>
     {% for post in posts %}
       {% with total_likes=post.users_like.count %}
       <div class="post">
         <a class="post__user" href="#">
-          <img src="{{ user.profile.photo.url }}" alt="avatar" class="post__user--img">
-          <p class="post__user--name">{{ user.get_full_name }}</p>
+          <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
+          <p class="post__user--name">{{ post.user.get_full_name }}</p>
         </a>
 
         <span class="post__datetime">{{ post.created|timesince }} ago</span>
@@ -18,10 +28,12 @@
           {{ post.caption }}
         </p>
 
-        <img
-          src="{{ post.image.url }}"
-          class="post__img"
-        />
+        {% if post.image %}
+          <img
+            src="{{ post.image.url }}"
+            class="post__img"
+          />
+        {% endif %}
 
         <div class="post__reaction">
           <div class="post__reaction--item">

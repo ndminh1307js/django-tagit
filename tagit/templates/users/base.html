@@ -12,16 +12,8 @@
 <body>
   <header class="header">
     <a href="/"><span class="header__logo">TagIt</span></a>
-    {% if not request.user.is_authenticated %}
-    <div class="login-form">
-      <form method="post" action="{% url 'login' %}">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <input type="submit" value="Login">
-      </form>
-      <a href="#">Forgot password?</a>
-    </div>
-    {% endif %}
+    {% block loginform %}
+    {% endblock %}
   </header>
 
   <div class="auth-content">

@@ -2,6 +2,19 @@
 
 {% block title %}Create an account{% endblock %}
 
+{% block loginform %}
+  {% if not request.user.is_authenticated %}
+    <div class="login-form">
+      <form method="post" action="{% url 'auth' %}">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Login">
+      </form>
+      <a href="{% url 'password_reset' %}">I've forgotten my password</a>
+    </div>
+  {% endif %}
+{% endblock %}
+
 {% block content %}
   <p class="heading__primary">Create an account</p>
   <p class="heading__description">Please use the form below to create a new account</p>
