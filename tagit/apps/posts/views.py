@@ -9,7 +9,8 @@ from .forms import PostCreateForm
 
 class NewsFeedView(LoginRequiredMixin, ListView):
     def post(self, request):
-        form = PostCreateForm(data=request.POST)
+        print(request.POST)
+        form = PostCreateForm(request.POST, request.FILES)
         if form.is_valid():
             # form data is valid
             cd = form.cleaned_data
