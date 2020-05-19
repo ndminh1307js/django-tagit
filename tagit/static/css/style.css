@@ -283,15 +283,16 @@ a {
     transition: 0.4s all ease-out;
     color: #999;
     cursor: pointer; }
-  .post__reaction--item:hover {
-    background-color: #ddd; }
   .post__reaction--item:hover i.fas.fa-heart {
     color: #8e0000;
     animation: likeButtonEffect 1s infinite; }
   .post__reaction--item i {
+    z-index: -1;
     font-size: 2rem;
     margin-right: 1rem;
     transition: all 0.2s ease-out; }
+  .post__reaction--item p {
+    z-index: -1; }
   .post__reaction--liked {
     color: #8e0000 !important; }
   .post__comments {
@@ -303,7 +304,9 @@ a {
       display: flex;
       align-items: center;
       padding: 1rem; }
-    .post__comments--add form textarea {
+    .post__comments--add form p {
+      width: 100%; }
+    .post__comments--add form p textarea {
       width: 85%;
       height: 5rem;
       resize: none;
@@ -319,7 +322,13 @@ a {
     .post__comments--item {
       display: flex;
       flex-direction: column;
-      border-bottom: 1px solid #ddd; }
+      border-bottom: 1px solid #ddd;
+      padding: 2rem 0; }
+      .post__comments--item p {
+        margin: 0; }
+    .post__comments--datetime {
+      font-size: 1.4rem !important;
+      color: #999; }
   .post__options {
     position: absolute;
     top: 3rem;
@@ -419,6 +428,7 @@ a {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1000;
   width: 100%;
   display: flex;
   align-items: center;

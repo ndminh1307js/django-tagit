@@ -5,7 +5,7 @@ from django.urls import reverse
 
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             related_name='posts_created',
+                             related_name='post_created',
                              on_delete=models.CASCADE)
     caption = models.TextField(blank=True)
     image = models.ImageField(
@@ -26,3 +26,21 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', args=[self.id])
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post,
+                             related_name='comments',
+                             on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             related_name='comment_created',
+                             on_delete=models.CASCADE)
+    content = models.TextField()
+    created = models.DateTimeField(auto_now_add=True,
+                                   db_index=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return self.content

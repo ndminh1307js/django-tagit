@@ -4,8 +4,37 @@
 {% block title %}{{ post.caption }}{% endblock %}
 
 {% block content %}
-  {% with total_likes=post.users_like.count %}
+  {% with total_likes=post.users_like.count users_like=post.users_like.all comments=post.comments.all %}
   <div class="post">
+    <div class="post__options" id="post-options-{{ post.id }}">
+      <i class="fas fa-ellipsis-h" id="post-options-btn-{{ post.id }}"></i>
+      <div id="post-options-list-{{ post.id }}">
+        <ul>
+          <li><a href="#">Edit</a></li>
+          <li><a id="open-likes-list" data-id="{{ post.id }}">People Likes</a></li>
+          <li><a href="#">Delete</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="post__likes" id="post-likes-{{ post.id }}">
+      <span>
+        <i class="fas fa-times" id="post-likes-btn-{{ post.id }}"></i>
+      </span>
+      <ul>
+        <p>People liked this post</p>
+        {% for user_like in users_like %}
+          <li>
+            <a class="post__user" href="#">
+              <img src="{% thumbnail user_like.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
+              <p class="post__user--name">{{ user_like.get_full_name }}</p>
+            </a>
+          </li>
+        {% empty %}
+        {% endfor %}
+      </ul>
+    </div>
+
     <a class="post__user" href="#">
       <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
       <p class="post__user--name">{{ post.user.get_full_name }}</p>
@@ -25,10 +54,15 @@
     {% endif %}
 
     <div class="post__reaction">
-      <div class="post__reaction--item">
+      <a
+        class="post__reaction--item {% if request.user not in users_like %}{% else %}post__reaction--liked{% endif %}"
+        data-id="{{ post.id }}"
+        data-action="{% if request.user in users_like %}un{% endif %}like"
+        id="like"
+      >
         <i class="fas fa-heart"></i>
-        {{ total_likes }}
-      </div>
+        <p>{{ total_likes }}</p>
+      </a>
 
       <div class="post__reaction--item">
         <i class="fas fa-comment"></i>
@@ -39,23 +73,31 @@
     <div class="post__comments">
       <div class="post__comments--add">
         <form method="post">
-          <textarea name="comment" placeholder="Write your comment"></textarea>
+          {{ comment_form.as_p }}
+          {% csrf_token %}
           <input type="submit" class="btn btn--outline" value="Send">
         </form>
       </div>
 
       <div class="post__comments--list">
         <p>Comments</p>
-        <div class="post__comments--item">
-          <a class="post__user" href="#">
-            <img
-              src="https://www.shareicon.net/data/512x512/2016/09/15/829473_man_512x512.png"
-              class="post__user--img"
-            />
-            <p class="post__user--name">Donald Trump</p>
-          </a>
-          <p>It sucks, Mr.President. That is a dangerous flu. We need more information to decide</p>
-        </div>
+        {% for comment in comments %}
+          <div class="post__comments--item">
+            <a class="post__user" href="#">
+              <img
+                src="{% thumbnail comment.user.profile.photo 32x32 crop %}"
+                class="post__user--img"
+              />
+              <p class="post__user--name">{{ comment.user.get_full_name }}</p>
+            </a>
+            <p class="post__comments--datetime">{{ post.created|timesince }} ago</p>
+            <p>
+              {{ comment.content }}
+            </p>
+          </div>
+        {% empty%}
+          No comments
+        {% endfor %}
       </div>
     </div>
   </div>
