@@ -17,7 +17,37 @@
     <p class="heading__primary">Your newsfeed</p>
     {% for post in posts %}
       {% with total_likes=post.users_like.count users_like=post.users_like.all %}
+
       <div class="post">
+        <div class="post__options" id="post-options-{{ post.id }}">
+          <i class="fas fa-ellipsis-h" id="post-options-btn-{{ post.id }}"></i>
+          <div id="post-options-list-{{ post.id }}">
+            <ul>
+              <li><a href="#">Edit</a></li>
+              <li><a id="open-likes-list" data-id="{{ post.id }}">People Likes</a></li>
+              <li><a href="#">Delete</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="post__likes" id="post-likes-{{ post.id }}">
+          <span>
+            <i class="fas fa-times" id="post-likes-btn-{{ post.id }}"></i>
+          </span>
+          <ul>
+            <p>People liked this post</p>
+            {% for user_like in users_like %}
+              <li>
+                <a class="post__user" href="#">
+                  <img src="{% thumbnail user_like.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
+                  <p class="post__user--name">{{ user_like.get_full_name }}</p>
+                </a>
+              </li>
+            {% empty %}
+            {% endfor %}
+          </ul>
+        </div>
+
         <a class="post__user" href="#">
           <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
           <p class="post__user--name">{{ post.user.get_full_name }}</p>

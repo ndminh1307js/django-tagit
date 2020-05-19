@@ -63,3 +63,44 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+// POST
+
+const closeLikesListButtons = document.querySelectorAll('.post__likes span');
+
+// Close post likes list
+closeLikesListButtons.forEach((closeBtn) => {
+  closeBtn.addEventListener('click', (e) => {
+    const postId = parseInt(e.target.id.split('-').pop());
+    const postLikesList = document.querySelector(`#post-likes-${postId}`);
+    postLikesList.style.display = 'none';
+  });
+});
+
+// Open post likes list
+const openLikesListOptions = document.querySelectorAll('a#open-likes-list');
+
+openLikesListOptions.forEach((openLikesListOption) => {
+  openLikesListOption.addEventListener('click', (e) => {
+    e.preventDefault();
+    const postId = parseInt(e.target.dataset.id);
+    const postLikesList = document.querySelector(`#post-likes-${postId}`);
+    postLikesList.style.display = 'block';
+  });
+});
+
+// Toggle post options dropdown
+
+const postOptionButtons = document.querySelectorAll('.post__options i');
+
+postOptionButtons.forEach((postOptionBtn) => {
+  postOptionBtn.addEventListener('click', (e) => {
+    const postId = parseInt(e.target.id.split('-').pop());
+    const postOptions = document.querySelector(`#post-options-${postId}`);
+    if (postOptions.classList.contains('post__options--open')) {
+      postOptions.classList.remove('post__options--open');
+    } else {
+      postOptions.classList.add('post__options--open');
+    }
+  });
+});
