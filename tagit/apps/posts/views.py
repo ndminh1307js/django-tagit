@@ -50,10 +50,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
             new_comment.save()
             messages.success(
                 request, "Your comment has been successfully sent")
-            return render(request,
-                          'posts/post/detail.html',
-                          {'post': post,
-                           'comment_form': comment_form})
+            return redirect(f'/posts/{id}')
 
     def get(self, request, id):
         comment_form = CommentCreateForm()

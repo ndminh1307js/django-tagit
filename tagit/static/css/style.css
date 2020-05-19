@@ -397,7 +397,8 @@ a {
       border-bottom: 1px solid #006064; }
 
 .content {
-  width: 100%;
+  margin-left: auto;
+  width: 72.5%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -517,14 +518,16 @@ a {
   transform: rotate(180deg); }
 
 #main {
+  position: relative;
   margin-top: 4rem;
   padding: 0 25%;
   display: flex; }
 
 .sidebar {
+  position: fixed;
   display: flex;
   flex-direction: column;
-  width: 40rem;
+  width: 12.5%;
   min-height: 100vh;
   padding: 1rem;
   user-select: none;
