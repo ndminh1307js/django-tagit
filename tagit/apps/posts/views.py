@@ -1,7 +1,10 @@
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
 
 from .models import Post
 from .forms import PostCreateForm
@@ -37,3 +40,21 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         return render(request,
                       'posts/post/detail.html',
                       {'post': post})
+
+
+class PostLikeView(LoginRequiredMixin, View):
+    def post(self, request):
+        data = json.loads(request.body.decode('utf-8'))
+        post_id = data.get('id')
+        action = data.get('action')
+        if post_id and action:
+            try:
+                post = Post.objects.get(id=post_id)
+                if action == 'like':
+                    post.users_like.add(request.user)
+                else:
+                    post.users_like.remove(request.user)
+                return JsonResponse({'status': 'ok'})
+            except:
+                pass
+        return JsonResponse({'status': 'error'})

@@ -16,7 +16,7 @@
   <div class="newsfeed">
     <p class="heading__primary">Your newsfeed</p>
     {% for post in posts %}
-      {% with total_likes=post.users_like.count %}
+      {% with total_likes=post.users_like.count users_like=post.users_like.all %}
       <div class="post">
         <a class="post__user" href="#">
           <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
@@ -37,10 +37,15 @@
         {% endif %}
 
         <div class="post__reaction">
-          <div class="post__reaction--item">
+          <a
+            class="post__reaction--item {% if request.user not in users_like %}{% else %}post__reaction--liked{% endif %}"
+            data-id="{{ post.id }}"
+            data-action="{% if request.user in users_like %}un{% endif %}like"
+            id="like"
+          >
             <i class="fas fa-heart"></i>
-            {{ total_likes }}
-          </div>
+            <p>{{ total_likes }}</p>
+          </a>
 
           <a class="post__reaction--item" href="{{ post.get_absolute_url }}">
             <i class="fas fa-comment"></i>

@@ -1,4 +1,6 @@
 {% load static %}
+{% load thumbnail %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,8 +23,8 @@
     </form>
 
     <div class="navigation__profile">
-      <img src="{{ request.user.profile.photo.url }}" alt="avatar">
-      <p>{{ request.user.get_full_name }}</p>
+      <img src="{% thumbnail user.profile.photo 32x32 crop %}" alt="avatar">
+      <p>{{ user.get_full_name }}</p>
     </div>
 
     <div class="navigation__option">
@@ -40,8 +42,8 @@
   <main id="main">
     <div class="sidebar">
       <a class="sidebar__profile" href="#">
-        <img src="{{ request.user.profile.photo.url }}" alt="avatar">
-        <p>{{ request.user.get_full_name }}</p>
+        <img src="{% thumbnail user.profile.photo 32x32 crop %}" alt="avatar">
+        <p>{{ user.get_full_name }}</p>
       </a>
 
       <div class="sidebar__list">
@@ -74,19 +76,6 @@
   </main>
 
   <script src="https://kit.fontawesome.com/d791987f9f.js" crossorigin="anonymous"></script>
-  <script type="text/javascript">
-    const option = document.querySelector('.navigation__option i');
-    const optionList = document.querySelector('.navigation__option div');
-    
-    option.addEventListener('click', function() {
-      if (option.classList.contains('open')) {
-        option.classList.remove('open');
-        optionList.style.display = 'none';
-      } else {
-        option.classList.add('open');
-        optionList.style.display = 'block';
-      }
-    });
-  </script>
+  <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
