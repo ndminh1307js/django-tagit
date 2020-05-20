@@ -51,4 +51,6 @@ urlpatterns = [
          name='profile'),
     # Follow
     path('follow/', views.UserFollowView.as_view(), name='follow'),
+    # Activities
+    path('activities/', views.UserActivitiesView.as_view(), name='activities'),
 ]

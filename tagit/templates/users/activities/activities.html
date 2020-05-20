@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}Activities{% endblock %}
+
+{% block content %}
+  <p class="heading__primary">Activities</p>
+  <div class="activities">
+    {% for action in actions %}
+    <div class="activities__item">
+      <a class="post__user" href="{{ action.user.get_absolute_url }}">
+        <img src="{% thumbnail action.user.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
+        <p class="post__user--name">{{ action.user.get_full_name }}</p>
+      </a>
+      <p>
+        {{ action.verb }}
+        {% if action.target %}
+          <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+        {% endif %}
+      </p>
+    </div>
+    {% empty %}
+    No activities
+    {% endfor %}
+  </div>
+{% endblock %}

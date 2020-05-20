@@ -12,7 +12,9 @@ from django.contrib import messages
 from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import Profile, Contact
 
-from ..posts.models import Post
+from tagit.apps.posts.models import Post
+from tagit.apps.actions.utils import create_action
+from tagit.apps.actions.models import Action
 
 
 class AuthenticationView(FormView):
@@ -47,6 +49,7 @@ class AuthenticationView(FormView):
                 # Save the user object
                 new_user.save()
                 Profile.objects.create(user=new_user)
+                create_action(request.user, 'has created a new account')
 
             return render(request,
                           'users/registration/register_done.html',
@@ -73,6 +76,7 @@ class UserEditView(LoginRequiredMixin, FormView):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            create_action(request.user, 'has changed his/her profile')
             messages.success(request, 'Profile updated successfully')
         else:
             messages.error(request, 'Error updating your profile')
@@ -119,6 +123,7 @@ class UserFollowView(LoginRequiredMixin, View):
                 if action == 'follow':
                     Contact.objects.get_or_create(user_from=request.user,
                                                   user_to=user)
+                    create_action(request.user, 'is following', user)
                 else:
                     Contact.objects.filter(user_from=request.user,
                                            user_to=user).delete()
@@ -126,3 +131,21 @@ class UserFollowView(LoginRequiredMixin, View):
             except User.DoesNotExist:
                 return JsonResponse({'status': 'error'})
         return JsonResponse({'status': 'error'})
+
+
+class UserActivitiesView(LoginRequiredMixin, View):
+    template_name = 'users/activities/activities.html'
+
+    def get(self, request):
+        # Display all actions by default
+        actions = Action.objects.all()
+        following_ids = request.user.following.values_list('id', flat=True)
+
+        if following_ids:
+            # If user is following others, retrieve only their actions
+            actions = actions.filter(user_id__in=following_ids)
+
+        return render(request,
+                      self.template_name,
+                      {'section': 'activities',
+                       'actions': actions})

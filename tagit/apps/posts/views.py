@@ -9,6 +9,8 @@ from django.views.generic import ListView, DetailView, View
 from .models import Post
 from .forms import PostCreateForm, CommentCreateForm
 
+from tagit.apps.actions.utils import create_action
+
 
 class NewsFeedView(LoginRequiredMixin, ListView):
     def post(self, request):
@@ -21,6 +23,7 @@ class NewsFeedView(LoginRequiredMixin, ListView):
             # assign current user to the item
             new_item.user = request.user
             new_item.save()
+            create_action(request.user, 'added', new_item)
             messages.success(request, "Post has been successfully created")
             return redirect(new_item.get_absolute_url())
 
@@ -48,6 +51,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
             new_comment.post = post
 
             new_comment.save()
+            create_action(request.user, 'added', new_comment)
             messages.success(
                 request, "Your comment has been successfully sent")
             return redirect(f'/posts/{id}')
@@ -71,6 +75,7 @@ class PostLikeView(LoginRequiredMixin, View):
                 post = Post.objects.get(id=post_id)
                 if action == 'like':
                     post.users_like.add(request.user)
+                    create_action(request.user, 'liked', post)
                 else:
                     post.users_like.remove(request.user)
                 return JsonResponse({'status': 'ok'})
