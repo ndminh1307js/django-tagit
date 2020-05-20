@@ -30,6 +30,11 @@ class NewsFeedView(LoginRequiredMixin, ListView):
     def get(self, request):
         form = PostCreateForm()
         posts = Post.objects.all()
+        following_ids = request.user.following.values_list('id', flat=True)
+
+        if following_ids:
+            posts = posts.filter(user_id__in=following_ids)
+
         return render(request,
                       'posts/post/newsfeed.html',
                       {'posts': posts,
