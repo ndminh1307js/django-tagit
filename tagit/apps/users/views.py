@@ -133,6 +133,20 @@ class UserFollowView(LoginRequiredMixin, View):
         return JsonResponse({'status': 'error'})
 
 
+class UserFollowersListView(LoginRequiredMixin, View):
+    template_name = 'users/profile/followers.html'
+
+    def get(self, request, user_id):
+        # get all followers of the user
+        user = get_object_or_404(User, id=user_id)
+        followers = user.followers.all()
+
+        return render(request,
+                      self.template_name,
+                      {'user': user,
+                       'followers': followers})
+
+
 class UserActivitiesView(LoginRequiredMixin, View):
     template_name = 'users/activities/activities.html'
 

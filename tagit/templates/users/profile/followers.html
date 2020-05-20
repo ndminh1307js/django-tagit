@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}Activities{% endblock %}
+
+{% block content %}
+  <p class="heading__primary">
+    {% if request.user.id == user.id %}Your{% else %}{{ user.get_full_name }}'s{% endif %} Followers
+  </p>
+
+  <div class="followers__list">
+    {% for follower in followers %}
+    <div class="followers__item">
+      <a class="post__user" href="{{ follower.get_absolute_url }}">
+        <img src="{% thumbnail follower.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
+        <p class="post__user--name">{{ follower.get_full_name }}</p>
+      </a>
+    </div>
+    {% empty %}
+    You don't have any followers
+    {% endfor %}
+  </div>
+  
+{% endblock %}

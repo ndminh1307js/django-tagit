@@ -23,8 +23,8 @@
     </form>
 
     <div class="navigation__profile">
-      <img src="{% thumbnail user.profile.photo 32x32 crop %}" alt="avatar">
-      <p>{{ user.get_full_name }}</p>
+      <img src="{% thumbnail request.user.profile.photo 32x32 crop %}" alt="avatar">
+      <p>{{ request.user.get_full_name }}</p>
     </div>
 
     <div class="navigation__option">
@@ -50,7 +50,7 @@
         <ul>
           <li><a href="{% url 'newsfeed' %}"><i class="far fa-newspaper"></i> News Feed</a></li>
           <li><a href="{% url 'activities' %}"><i class="far fa-bell"></i> Activities</a></li>
-          <li><a href="#"><i class="far fa-envelope"></i> Inboxes (2)</a></li>
+          <li><a href="#"><i class="far fa-envelope"></i> Messages</a></li>
           <li><a href="#"><i class="fas fa-users"></i> Followers</a></li>
         </ul>
       </div>
