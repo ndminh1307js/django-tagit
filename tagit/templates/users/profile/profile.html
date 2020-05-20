@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load thumbnail %}
 
 {% block title %}
@@ -65,7 +66,7 @@
             <p>People liked this post</p>
             {% for user_like in users_like %}
               <li>
-                <a class="post__user" href="#">
+                <a class="post__user" href="{% url 'profile' user_like.id %}">
                   <img src="{% thumbnail user_like.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
                   <p class="post__user--name">{{ user_like.get_full_name }}</p>
                 </a>
@@ -115,4 +116,9 @@
     No posts
     {% endfor %}
   </div>
+{% endblock %}
+
+{% block script %}
+{% csrf_token %}
+<script src="{% static 'js/post.js' %}"></script>
 {% endblock %}

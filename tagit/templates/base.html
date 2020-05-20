@@ -41,9 +41,9 @@
 
   <main id="main">
     <div class="sidebar">
-      <a class="sidebar__profile" href="#">
-        <img src="{% thumbnail user.profile.photo 32x32 crop %}" alt="avatar">
-        <p>{{ user.get_full_name }}</p>
+      <a class="sidebar__profile" href="{% url 'profile' request.user.id %}">
+        <img src="{% thumbnail request.user.profile.photo 32x32 crop %}" alt="avatar">
+        <p>{{ request.user.get_full_name }}</p>
       </a>
 
       <div class="sidebar__list">
