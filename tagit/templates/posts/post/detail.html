@@ -26,7 +26,7 @@
         <p>People liked this post</p>
         {% for user_like in users_like %}
           <li>
-            <a class="post__user" href="#">
+            <a class="post__user" href="{{ user_like.get_absolute_url }}">
               <img src="{% thumbnail user_like.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
               <p class="post__user--name">{{ user_like.get_full_name }}</p>
             </a>
@@ -36,7 +36,7 @@
       </ul>
     </div>
 
-    <a class="post__user" href="#">
+    <a class="post__user" href="{{ post.user.get_absolute_url }}">
       <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
       <p class="post__user--name">{{ post.user.get_full_name }}</p>
     </a>
@@ -84,7 +84,7 @@
         <p>Comments</p>
         {% for comment in comments %}
           <div class="post__comments--item">
-            <a class="post__user" href="#">
+            <a class="post__user" href="{{ comment.user.get_absolute_url }}">
               <img
                 src="{% thumbnail comment.user.profile.photo 32x32 crop %}"
                 class="post__user--img"

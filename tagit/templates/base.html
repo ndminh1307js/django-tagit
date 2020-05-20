@@ -41,7 +41,7 @@
 
   <main id="main">
     <div class="sidebar">
-      <a class="sidebar__profile" href="{% url 'profile' request.user.id %}">
+      <a class="sidebar__profile" href="{{ request.user.get_absolute_url }}">
         <img src="{% thumbnail request.user.profile.photo 32x32 crop %}" alt="avatar">
         <p>{{ request.user.get_full_name }}</p>
       </a>
@@ -51,8 +51,7 @@
           <li><a href="{% url 'newsfeed' %}"><i class="far fa-newspaper"></i> News Feed</a></li>
           <li><a href="#"><i class="far fa-bell"></i> Notifications (3)</a></li>
           <li><a href="#"><i class="far fa-envelope"></i> Inboxes (2)</a></li>
-          <li><a href="#"><i class="fab fa-slack-hash"></i> Hashtags</a></li>
-          <li><a href="#"><i class="fas fa-users"></i> Friends</a></li>
+          <li><a href="#"><i class="fas fa-users"></i> Followers</a></li>
         </ul>
       </div>
     </div>

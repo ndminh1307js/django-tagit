@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+import json
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +10,7 @@ from django.conf import settings
 from django.contrib import messages
 
 from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
-from .models import Profile
+from .models import Profile, Contact
 
 from ..posts.models import Post
 
@@ -104,3 +106,23 @@ class UserProfileView(LoginRequiredMixin, View):
                       self.template_name,
                       {'user': user,
                        'posts': posts})
+
+
+class UserFollowView(LoginRequiredMixin, View):
+    def post(self, request):
+        data = json.loads(request.body.decode('utf-8'))
+        user_id = data.get('id')
+        action = data.get('action')
+        if user_id and action:
+            try:
+                user = User.objects.get(id=user_id)
+                if action == 'follow':
+                    Contact.objects.get_or_create(user_from=request.user,
+                                                  user_to=user)
+                else:
+                    Contact.objects.filter(user_from=request.user,
+                                           user_to=user).delete()
+                return JsonResponse({'status': 'ok'})
+            except User.DoesNotExist:
+                return JsonResponse({'status': 'error'})
+        return JsonResponse({'status': 'error'})

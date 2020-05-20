@@ -7,7 +7,7 @@ class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              related_name='post_created',
                              on_delete=models.CASCADE)
-    caption = models.TextField(blank=True)
+    caption = models.TextField()
     image = models.ImageField(
         upload_to=f'images/%Y/%m/%d/',
         blank=True
@@ -40,7 +40,7 @@ class Comment(models.Model):
                                    db_index=True)
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('created',)
 
     def __str__(self):
         return self.content

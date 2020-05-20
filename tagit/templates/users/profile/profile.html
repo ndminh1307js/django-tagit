@@ -11,7 +11,18 @@
     <p class="heading__primary">{% if request.user.id == user.id %}Your{% else %}{{ user.get_full_name }}'s{% endif %} Profile</p>
     <div class="profile__follow">
       <img src="{% thumbnail user.profile.photo 128x128 crop %}" alt="profile-photo">
-      <a href="#" class="btn btn--outline" id="follow-btn">Follow {{ user.username }}</a>
+      {% if request.user.id == user.id %}
+      {% else %}
+        <a
+          href="#"
+          data-id="{{ user.id }}"
+          data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+          class="btn {% if request.user in user.followers.all %}btn--danger{% else %}btn--outline{% endif %}"
+          id="follow"
+        >
+          {% if request.user in user.followers.all %}Unfollow{% else %}Follow{% endif %}
+        </a>
+      {% endif %}
     </div>
     <ul class="profile__list">
       <li class="profile__item">
@@ -31,12 +42,10 @@
         <p class="profile__field">{{ user.profile.date_of_birth }}</p>
       </li>
       <li class="profile__item">
-        <p class="profile__fieldname">Following: </p>
-        <p class="profile__field">12 users</p>
-      </li>
-      <li class="profile__item">
-        <p class="profile__fieldname">Followed: </p>
-        <p class="profile__field">6 users</p>
+        <p class="profile__fieldname">Followers: </p>
+        {% with total_followers=user.followers.count %}
+        <p class="profile__field"><span id="followers">{{ total_followers }}</span> user{{ total_followers|pluralize }}</p>
+        {% endwith %}
       </li>
     </ul>
   </div>
@@ -121,4 +130,7 @@
 {% block script %}
 {% csrf_token %}
 <script src="{% static 'js/post.js' %}"></script>
+{% if request.user.id != user.id%}
+  <script src="{% static 'js/follow.js' %}"></script>
+{% endif %}
 {% endblock %}
