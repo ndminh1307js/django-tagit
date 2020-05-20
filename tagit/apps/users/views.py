@@ -1,13 +1,16 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.views.generic import View, FormView
 from django.conf import settings
 from django.contrib import messages
 
 from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import Profile
+
+from ..posts.models import Post
 
 
 class AuthenticationView(FormView):
@@ -88,3 +91,16 @@ class UserEditView(LoginRequiredMixin, FormView):
                       self.template_name,
                       {'user_form': user_form,
                        'profile_form': profile_form})
+
+
+class UserProfileView(LoginRequiredMixin, View):
+    template_name = 'users/profile/profile.html'
+
+    def get(self, request, user_id):
+        user = get_object_or_404(User,
+                                 id=user_id)
+        posts = Post.objects.filter(user=user)
+        return render(request,
+                      self.template_name,
+                      {'user': user,
+                       'posts': posts})

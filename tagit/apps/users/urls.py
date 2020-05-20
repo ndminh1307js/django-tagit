@@ -45,4 +45,8 @@ urlpatterns = [
          name='password_reset_complete'),
     # Edit user profile
     path('edit/', views.UserEditView.as_view(), name='edit'),
+    # Profile
+    path('profile/<int:user_id>/',
+         views.UserProfileView.as_view(),
+         name='profile'),
 ]

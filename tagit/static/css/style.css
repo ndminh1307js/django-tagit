@@ -43,8 +43,8 @@ a {
   color: #006064; }
 
 .heading__primary {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
   text-transform: uppercase;
   background-color: #006064;
   padding: 0.5rem;
@@ -395,6 +395,32 @@ a {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
       border-bottom: 1px solid #006064; }
+
+.profile {
+  width: 100%; }
+  .profile__follow {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .profile__follow img {
+      width: 12.8rem;
+      height: 12.8rem;
+      margin-bottom: 2rem; }
+  .profile__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 20rem; }
+  .profile__item {
+    display: flex;
+    align-items: center; }
+  .profile p {
+    font-size: 1.8rem; }
+  .profile__fieldname {
+    color: #333;
+    width: 12rem; }
+  .profile__field {
+    color: #006064; }
 
 .content {
   margin-left: auto;

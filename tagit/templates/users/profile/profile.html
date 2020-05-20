@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}
+  {% if request.user.id == user.id %}Your{% else %}{{ user.get_full_name }}'s{% endif %} personal page
+{% endblock %}
+
+{% block content %}
+  <div class="profile">
+    <p class="heading__primary">{% if request.user.id == user.id %}Your{% else %}{{ user.get_full_name }}'s{% endif %} Profile</p>
+    <div class="profile__follow">
+      <img src="{% thumbnail user.profile.photo 128x128 crop %}" alt="profile-photo">
+      <a href="#" class="btn btn--outline" id="follow-btn">Follow {{ user.username }}</a>
+    </div>
+    <ul class="profile__list">
+      <li class="profile__item">
+        <p class="profile__fieldname">Username: </p>
+        <p class="profile__field">{{ user.username }}</p>
+      </li>
+      <li class="profile__item">
+        <p class="profile__fieldname">Full Name: </p>
+        <p class="profile__field">{{ user.get_full_name }}</p>
+      </li>
+      <li class="profile__item">
+        <p class="profile__fieldname">Email: </p>
+        <p class="profile__field">{{ user.email }}</p>
+      </li>
+      <li class="profile__item">
+        <p class="profile__fieldname">Date of birth: </p>
+        <p class="profile__field">{{ user.profile.date_of_birth }}</p>
+      </li>
+      <li class="profile__item">
+        <p class="profile__fieldname">Following: </p>
+        <p class="profile__field">12 users</p>
+      </li>
+      <li class="profile__item">
+        <p class="profile__fieldname">Followed: </p>
+        <p class="profile__field">6 users</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="newsfeed">
+    <p class="heading__primary">{% if request.user.id == user.id %}Your{% else %}{{ user.get_full_name }}'s{% endif %} posts</p>
+    {% for post in posts %}
+      {% with total_likes=post.users_like.count users_like=post.users_like.all total_comments=post.comments.count %}
+
+      <div class="post">
+        <div class="post__options" id="post-options-{{ post.id }}">
+          <i class="fas fa-ellipsis-h" id="post-options-btn-{{ post.id }}"></i>
+          <div id="post-options-list-{{ post.id }}">
+            <ul>
+              <li><a href="#">Edit</a></li>
+              <li><a id="open-likes-list" data-id="{{ post.id }}">People Likes</a></li>
+              <li><a href="#">Delete</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="post__likes" id="post-likes-{{ post.id }}">
+          <span>
+            <i class="fas fa-times" id="post-likes-btn-{{ post.id }}"></i>
+          </span>
+          <ul>
+            <p>People liked this post</p>
+            {% for user_like in users_like %}
+              <li>
+                <a class="post__user" href="#">
+                  <img src="{% thumbnail user_like.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
+                  <p class="post__user--name">{{ user_like.get_full_name }}</p>
+                </a>
+              </li>
+            {% empty %}
+            {% endfor %}
+          </ul>
+        </div>
+
+        <a class="post__user" href="#">
+          <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
+          <p class="post__user--name">{{ post.user.get_full_name }}</p>
+        </a>
+
+        <span class="post__datetime">{{ post.created|timesince }} ago</span>
+        
+        <p class="post__caption">
+          {{ post.caption }}
+        </p>
+
+        {% if post.image %}
+          <img
+            src="{% thumbnail post.image 640x480 crop %}"
+            class="post__img"
+          />
+        {% endif %}
+
+        <div class="post__reaction">
+          <a
+            class="post__reaction--item {% if request.user not in users_like %}{% else %}post__reaction--liked{% endif %}"
+            data-id="{{ post.id }}"
+            data-action="{% if request.user in users_like %}un{% endif %}like"
+            id="like"
+          >
+            <i class="fas fa-heart"></i>
+            <p>{{ total_likes }}</p>
+          </a>
+
+          <a class="post__reaction--item" href="{{ post.get_absolute_url }}">
+            <i class="fas fa-comment"></i>
+            {{ total_comments }}
+          </a>
+        </div>
+      </div>
+      {% endwith %}
+    {% empty %}
+    No posts
+    {% endfor %}
+  </div>
+{% endblock %}
