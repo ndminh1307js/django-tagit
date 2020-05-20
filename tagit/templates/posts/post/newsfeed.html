@@ -17,7 +17,7 @@
   <div class="newsfeed">
     <p class="heading__primary">Your newsfeed</p>
     {% for post in posts %}
-      {% with total_likes=post.users_like.count users_like=post.users_like.all %}
+      {% with total_likes=post.users_like.count users_like=post.users_like.all total_comments=post.comments.count %}
 
       <div class="post">
         <div class="post__options" id="post-options-{{ post.id }}">
@@ -80,7 +80,7 @@
 
           <a class="post__reaction--item" href="{{ post.get_absolute_url }}">
             <i class="fas fa-comment"></i>
-            2k
+            {{ total_comments }}
           </a>
         </div>
       </div>

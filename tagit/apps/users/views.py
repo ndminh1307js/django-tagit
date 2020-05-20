@@ -1,5 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, FormView
@@ -12,27 +12,37 @@ from .models import Profile
 
 class AuthenticationView(FormView):
     def post(self, request):
-        form = UserLoginForm(request.POST)
-        user_form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(request,
-                                username=cd['username'],
-                                password=cd['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponseRedirect('/users/edit')
+        formname = request.POST.get('formname')
+
+        if formname == 'login':
+            form = UserLoginForm(request.POST)
+
+            if form.is_valid():
+                cd = form.cleaned_data
+                user = authenticate(request,
+                                    username=cd['username'],
+                                    password=cd['password'])
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        return redirect('/posts/newsfeed/')
+                    else:
+                        return HttpResponse('Inactive user')
                 else:
-                    return HttpResponse('Inactive user')
-        elif user_form.is_valid():
-            # Create a new object but not saving it yet
-            new_user = user_form.save(commit=False)
-            # Set the chosen password
-            new_user.set_password(user_form.cleaned_data['password'])
-            # Save the user object
-            new_user.save()
-            Profile.objects.create(user=new_user)
+                    HttpResponse('Invalid user login')
+
+        if formname == 'register':
+            user_form = UserRegistrationForm(request.POST)
+
+            if user_form.is_valid():
+                # Create a new object but not saving it yet
+                new_user = user_form.save(commit=False)
+                # Set the chosen password
+                new_user.set_password(user_form.cleaned_data['password'])
+                # Save the user object
+                new_user.save()
+                Profile.objects.create(user=new_user)
+
             return render(request,
                           'users/registration/register_done.html',
                           {'new_user': new_user})

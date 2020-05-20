@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load thumbnail %}
 
 {% block title %}Change My Profile{% endblock %}
 
@@ -7,8 +8,8 @@
   <form method="post" enctype="multipart/form-data" class="form">
     {{ user_form.as_p }}
     {{ profile_form.as_p }}
-    {% with profile_photo_url=request.user.profile.photo.url %}
-      <img src="{{ profile_photo_url }}">
+    {% with profile_photo=request.user.profile.photo %}
+      <img src="{% thumbnail profile_photo 256x256 crop %}">
     {% endwith %}
     
     {% csrf_token %}

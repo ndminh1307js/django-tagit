@@ -7,6 +7,7 @@
     <div class="login-form">
       <form method="post" action="{% url 'auth' %}">
         {{ form.as_p }}
+        <input type="hidden" name="formname" value="login">
         {% csrf_token %}
         <input type="submit" value="Login">
       </form>
@@ -20,6 +21,7 @@
   <p class="heading__description">Please use the form below to create a new account</p>
   <form method="post" class="form">
     {{ user_form.as_p }}
+    <input type="hidden" name="formname" value="register">
     {% csrf_token %}
     <input type="submit" class="btn btn--outline" value="Create my account">
   </form>

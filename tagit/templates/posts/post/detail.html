@@ -5,7 +5,7 @@
 {% block title %}{{ post.caption }}{% endblock %}
 
 {% block content %}
-  {% with total_likes=post.users_like.count users_like=post.users_like.all comments=post.comments.all %}
+  {% with total_likes=post.users_like.count users_like=post.users_like.all comments=post.comments.all total_comments=post.comments.count %}
   <div class="post">
     <div class="post__options" id="post-options-{{ post.id }}">
       <i class="fas fa-ellipsis-h" id="post-options-btn-{{ post.id }}"></i>
@@ -67,7 +67,7 @@
 
       <div class="post__reaction--item">
         <i class="fas fa-comment"></i>
-        2k
+        {{ total_comments }}
       </div>
     </div>
 
