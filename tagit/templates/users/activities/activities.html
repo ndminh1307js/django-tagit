@@ -18,6 +18,7 @@
           <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
         {% endif %}
       </p>
+      <span class="activities__datetime">{{ action.created|timesince }} ago</p>
     </div>
     {% empty %}
     No activities

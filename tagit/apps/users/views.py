@@ -16,6 +16,15 @@ from tagit.apps.posts.models import Post
 from tagit.apps.actions.utils import create_action
 from tagit.apps.actions.models import Action
 
+# Override __str__ method to show user's full name
+
+
+def get_name(self):
+    return self.get_full_name()
+
+
+User.add_to_class('__str__', get_name)
+
 
 class AuthenticationView(FormView):
     def post(self, request):
@@ -127,6 +136,7 @@ class UserFollowView(LoginRequiredMixin, View):
                 else:
                     Contact.objects.filter(user_from=request.user,
                                            user_to=user).delete()
+                    create_action(request.user, 'has unfollowed', user)
                 return JsonResponse({'status': 'ok'})
             except User.DoesNotExist:
                 return JsonResponse({'status': 'error'})

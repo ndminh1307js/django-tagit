@@ -66,7 +66,9 @@ a {
     display: flex;
     align-items: center;
     border: 1px solid #ddd;
-    padding: 1rem 2rem; }
+    padding: 1rem; }
+    .activities__item a img {
+      margin-right: 0.6rem; }
     .activities__item:not(:last-child) {
       margin-bottom: 1rem; }
     .activities__item a.post__user {
@@ -74,7 +76,10 @@ a {
       padding: 0;
       margin-right: 0.5rem; }
     .activities__item p {
-      font-size: 1.8rem; }
+      font-size: 1.6rem; }
+  .activities__datetime {
+    color: #999;
+    margin-left: auto; }
 
 .btn {
   padding: 0.6rem 1.2rem;
@@ -262,16 +267,20 @@ a {
   .notify__item {
     width: 100%;
     height: auto;
-    padding: 1rem 2rem;
-    font-size: 1.8rem;
+    padding: 1rem;
+    font-size: 1.6rem;
     border: 1px solid #ddd;
     margin-bottom: 1rem;
     display: flex;
     align-items: center; }
   .notify__img {
-    width: 4rem;
-    height: 4rem;
-    margin-right: 2rem; }
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-right: 1rem; }
+  .notify__datetime {
+    font-size: 1.6rem;
+    color: #999;
+    margin-left: auto; }
 
 .post {
   position: relative;
@@ -451,7 +460,7 @@ a {
 
 .content {
   margin-left: auto;
-  width: 72.5%;
+  width: 75%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -580,7 +589,7 @@ a {
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: 12.5%;
+  width: 10%;
   min-height: 100vh;
   padding: 1rem;
   user-select: none;
