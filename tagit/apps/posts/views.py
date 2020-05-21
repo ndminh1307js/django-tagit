@@ -93,7 +93,7 @@ class PostEditView(LoginRequiredMixin, FormView):
     template_name = 'posts/post/edit.html'
 
     def post(self, request, post_id):
-        post = Post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id, user__id=request.user.id)
         post_form = PostCreateForm(instance=post,
                                    data=request.POST,
                                    files=request.FILES)
@@ -107,7 +107,7 @@ class PostEditView(LoginRequiredMixin, FormView):
         return redirect(f'/posts/{post_id}/')
 
     def get(self, request, post_id):
-        post = Post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id, user__id=request.user.id)
         post_form = PostCreateForm(instance=post)
 
         return render(request,
