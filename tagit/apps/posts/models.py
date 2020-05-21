@@ -22,7 +22,7 @@ class Post(models.Model):
         ordering = ('-created',)
 
     def __str__(self):
-        return f"a new post with caption: {self.caption[:30]}..."
+        return f"a post with caption: {self.caption[:30]}..."
 
     def get_absolute_url(self):
         return reverse('detail', args=[self.id])
@@ -43,7 +43,7 @@ class Comment(models.Model):
         ordering = ('created',)
 
     def __str__(self):
-        return f'a new comment: {self.content[:30]}... on a post'
+        return f'a comment: {self.content[:30]}... on a post'
 
     def get_absolute_url(self):
         return f'/posts/{self.post.id}/#comment-{self.id}'

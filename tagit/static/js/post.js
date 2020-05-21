@@ -82,6 +82,16 @@ document.addEventListener('DOMContentLoaded', function () {
     postOptionBtn.addEventListener('click', (e) => {
       const postId = parseInt(e.target.id.split('-').pop());
       const postOptions = document.querySelector(`#post-options-${postId}`);
+      const postOptionsItems = document.querySelectorAll(
+        `#post-options-list-${postId} ul li`
+      );
+
+      postOptionsItems.forEach((postOptionsItem) => {
+        postOptionsItem.addEventListener('click', () => {
+          postOptions.classList.remove('post__options--open');
+        });
+      });
+
       if (postOptions.classList.contains('post__options--open')) {
         postOptions.classList.remove('post__options--open');
       } else {

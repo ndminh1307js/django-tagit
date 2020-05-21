@@ -44,7 +44,7 @@
       <li class="profile__item">
         <p class="profile__fieldname">Followers: </p>
         {% with total_followers=user.followers.count %}
-        <p class="profile__field"><span id="followers">{{ total_followers }}</span> user{{ total_followers|pluralize }}</p>
+        <a href="{% url 'followers_list' user.id %}"><p class="profile__field"><span id="followers">{{ total_followers }}</span> user{{ total_followers|pluralize }}</p></a>
         {% endwith %}
       </li>
     </ul>
@@ -60,7 +60,7 @@
           <i class="fas fa-ellipsis-h" id="post-options-btn-{{ post.id }}"></i>
           <div id="post-options-list-{{ post.id }}">
             <ul>
-              <li><a href="#">Edit</a></li>
+              <li><a href="{% url 'post_edit' post.id %}">Edit</a></li>
               <li><a id="open-likes-list" data-id="{{ post.id }}">People Likes</a></li>
               <li><a href="#">Delete</a></li>
             </ul>

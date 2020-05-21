@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}Edit Your Post{% endblock %}
+
+{% block content %}
+  <div class="newpost">
+    <p class="heading__primary">Edit Your Post</p>
+    <form method="post" enctype="multipart/form-data">
+      {{ post_form.as_p }}
+      {% csrf_token %}
+      <input type="submit" value="Save changes" class="btn btn--outline">
+    </form>
+  </div>
+{% endblock %}

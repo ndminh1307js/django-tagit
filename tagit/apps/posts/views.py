@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, View, FormView
 
 from .models import Post
 from .forms import PostCreateForm, CommentCreateForm
@@ -87,3 +87,29 @@ class PostLikeView(LoginRequiredMixin, View):
             except:
                 pass
         return JsonResponse({'status': 'error'})
+
+
+class PostEditView(LoginRequiredMixin, FormView):
+    template_name = 'posts/post/edit.html'
+
+    def post(self, request, post_id):
+        post = Post.objects.get(id=post_id)
+        post_form = PostCreateForm(instance=post,
+                                   data=request.POST,
+                                   files=request.FILES)
+        if post_form.is_valid():
+            post_form.save()
+            create_action(request.user, 'has just editted', post)
+            messages.success(request, 'Post has been successfully editted')
+        else:
+            messages.error(request, 'Post editting has been failed')
+
+        return redirect(f'/posts/{post_id}/')
+
+    def get(self, request, post_id):
+        post = Post.objects.get(id=post_id)
+        post_form = PostCreateForm(instance=post)
+
+        return render(request,
+                      self.template_name,
+                      {'post_form': post_form})
