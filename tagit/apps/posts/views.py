@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import ListView, DetailView, View, FormView
+from django.urls import reverse
 
 from .models import Post
 from .forms import PostCreateForm, CommentCreateForm
@@ -113,3 +114,16 @@ class PostEditView(LoginRequiredMixin, FormView):
         return render(request,
                       self.template_name,
                       {'post_form': post_form})
+
+
+class PostDeleteView(LoginRequiredMixin, View):
+    def post(self, request, post_id):
+        post = Post.objects.get(id=post_id, user__id=request.user.id)
+        post.delete()
+        return JsonResponse({'status': 'ok'})
+
+    def get(self, request, post_id):
+        post = Post.objects.get(id=post_id, user__id=request.user.id)
+        return render(request,
+                      'posts/post/delete.html',
+                      {'post': post})

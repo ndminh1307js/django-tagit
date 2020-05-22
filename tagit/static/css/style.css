@@ -53,6 +53,17 @@ a {
   text-align: center;
   margin-bottom: 1rem; }
 
+.heading__danger {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  background-color: #8e0000;
+  padding: 0.5rem;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1rem; }
+
 .heading__description {
   font-size: 1.6rem;
   color: #999;
@@ -431,6 +442,15 @@ a {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
       border-bottom: 1px solid #006064; }
+  .post__delete {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem; }
+    .post__delete span {
+      margin-right: auto; }
+    .post__delete button {
+      margin-right: 1rem; }
 
 .profile {
   width: 100%; }

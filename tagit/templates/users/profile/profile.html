@@ -60,9 +60,13 @@
           <i class="fas fa-ellipsis-h" id="post-options-btn-{{ post.id }}"></i>
           <div id="post-options-list-{{ post.id }}">
             <ul>
-              <li><a href="{% url 'post_edit' post.id %}">Edit</a></li>
+              {% if request.user.id == post.user.id  %}
+                <li><a href="{% url 'post_edit' post.id %}">Edit</a></li>
+              {% endif %}
               <li><a id="open-likes-list" data-id="{{ post.id }}">People Likes</a></li>
-              <li><a href="#">Delete</a></li>
+              {% if request.user.id == post.user.id  %}
+                <li><a href="{% url 'post_delete' post.id %}">Delete</a></li>
+              {% endif %}
             </ul>
           </div>
         </div>

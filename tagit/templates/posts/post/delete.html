@@ -5,6 +5,15 @@
 {% block title %}{{ post.caption }}{% endblock %}
 
 {% block content %}
+  <p class="heading__danger">Remove this post</p>
+  <div class="post__delete">
+    <span>
+      This post will be removed permanently?
+    </span>
+    <a class="btn btn--primary" data-id="{{ post.id }}" id="post-delete-btn">Remove this post</a>
+    <a class="btn btn--danger" href="{% url 'profile' request.user.id %}">Skip action</a>
+  </div>
+
   {% with total_likes=post.users_like.count users_like=post.users_like.all comments=post.comments.all total_comments=post.comments.count %}
   <div class="post">
     <div class="post__options" id="post-options-{{ post.id }}">
@@ -15,7 +24,7 @@
             <li><a href="{% url 'post_edit' post.id %}">Edit</a></li>
           {% endif %}
           <li><a id="open-likes-list" data-id="{{ post.id }}">People Likes</a></li>
-          <li><a href="{% url 'post_delete' post.id %}">Delete</a></li>
+          <li><a href="#">Delete</a></li>
         </ul>
       </div>
     </div>
@@ -109,4 +118,6 @@
 
 {% block script %}
 <script src="{% static 'js/post.js' %}"></script>
+{% csrf_token %}
+<script src="{% static 'js/delete.js' %}"></script>
 {% endblock %}
