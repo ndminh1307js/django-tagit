@@ -1,4 +1,5 @@
 import json
+import redis
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -6,11 +7,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import ListView, DetailView, View, FormView
 from django.urls import reverse
+from django.conf import settings
 
 from .models import Post
 from .forms import PostCreateForm, CommentCreateForm
 
 from tagit.apps.actions.utils import create_action
+
+# Connect to Redis
+r = redis.Redis(host=settings.REDIS_HOST,
+                port=settings.REDIS_PORT,
+                db=settings.REDIS_DB)
 
 
 class NewsFeedView(LoginRequiredMixin, ListView):
@@ -42,6 +49,20 @@ class NewsFeedView(LoginRequiredMixin, ListView):
                        'form': form})
 
 
+class TrendingView(LoginRequiredMixin, ListView):
+    def get(self, request):
+        # get post ranking dictionary
+        post_ranking = r.zrange('post_ranking', 0, -1, desc=True)
+        post_ranking_ids = [int(id) for id in post_ranking]
+        # get most viewed posts
+        most_viewed = list(Post.objects.filter(id__in=post_ranking_ids))
+        most_viewed.sort(key=lambda x: post_ranking_ids.index(x.id))
+
+        return render(request,
+                      'posts/post/trending.html',
+                      {'most_viewed': most_viewed})
+
+
 class PostDetailView(LoginRequiredMixin, DetailView):
     def post(self, request, id):
         comment_form = CommentCreateForm(request.POST)
@@ -60,15 +81,22 @@ class PostDetailView(LoginRequiredMixin, DetailView):
             create_action(request.user, 'added', new_comment)
             messages.success(
                 request, "Your comment has been successfully sent")
+
             return redirect(f'/posts/{id}')
 
     def get(self, request, id):
         comment_form = CommentCreateForm()
         post = get_object_or_404(Post, id=id)
+        # increment total post views by 1
+        total_views = r.incr(f'post:{post.id}:views')
+        # increment post ranking by 1
+        r.zincrby('post_ranking', 1, post.id)
+
         return render(request,
                       'posts/post/detail.html',
                       {'post': post,
-                       'comment_form': comment_form})
+                       'comment_form': comment_form,
+                       'total_views': total_views})
 
 
 class PostLikeView(LoginRequiredMixin, View):

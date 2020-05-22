@@ -83,7 +83,7 @@
       </div>
 
       <div class="post__comments--list">
-        <p>Comments</p>
+        <p>{{ total_views }} view{{ total_views|pluralize }}&nbsp;&nbsp;-&nbsp;&nbsp;{{ total_comments }} comment{{ total_comments|pluralize }}</p>
         {% for comment in comments %}
           <div class="post__comments--item" id="comment-{{ comment.id }}">
             <a class="post__user" href="{{ comment.user.get_absolute_url }}">

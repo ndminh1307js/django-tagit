@@ -162,3 +162,8 @@ AUTHENTICATION_BACKENDS = [
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('profile', args=[u.id])
 }
+
+# Redis Databases
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = 6379
+REDIS_DB = 0

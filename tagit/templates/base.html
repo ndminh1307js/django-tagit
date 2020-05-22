@@ -50,8 +50,9 @@
         <ul>
           <li><a href="{% url 'newsfeed' %}"><i class="far fa-newspaper"></i> News Feed</a></li>
           <li><a href="{% url 'activities' %}"><i class="far fa-bell"></i> Activities</a></li>
+          <li><a href="{% url 'trending' %}"><i class="fas fa-poll"></i> Trending</a></li>
           <li><a href="#"><i class="far fa-envelope"></i> Messages</a></li>
-          <li><a href="{% url 'followers_list' request.user.id %}"><i class="fas fa-users"></i> Followers</a></li>
+          <li><a href="{% url 'followers_list' request.user.id %}"><i class="fas fa-id-card"></i> Followers</a></li>
         </ul>
       </div>
     </div>
