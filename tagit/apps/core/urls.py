@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('tagit.apps.users.urls')),
     path('posts/', include('tagit.apps.posts.urls')),
+    path('search/', include('tagit.apps.search.urls')),
 ]
 
 if settings.DEBUG:

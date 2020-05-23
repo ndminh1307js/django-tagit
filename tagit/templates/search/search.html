@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}Search on TagIt{% endblock %}
+
+{% block content %}
+  <div class="search__form">
+    <form method="get">
+      {{ search_form.as_p }}
+      <button type="submit">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </button>
+    </form>
+  </div>
+
+  <p class="heading__primary">Search Results</p>
+  <div class="search__options">
+    <span class="search__tab search__tab--active" id="user-tab">Users</span>
+    <span class="search__tab" id="post-tab">Posts</span>
+  </div>
+  <div class="search__container" id="search-container">
+    <div class="search__results search__results--default" id="search-user">
+      {% for user in user_results %}
+        <div class="followers__item">
+          <a class="post__user" href="{{ user.get_absolute_url }}">
+            <img src="{% thumbnail user.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
+            <p class="post__user--name">{{ user.get_full_name }}</p>
+          </a>
+        </div>
+      {% empty %}
+        {% if keyword %}
+          <p>No search user results with keyword "{{ keyword }}"</p>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="search__results" id="search-post">
+      {% for post in post_results %}
+      {% with total_likes=post.users_like.count users_like=post.users_like.all total_comments=post.comments.count %}
+
+      <div class="post">
+        <div class="post__options" id="post-options-{{ post.id }}">
+          <i class="fas fa-ellipsis-h" id="post-options-btn-{{ post.id }}"></i>
+          <div id="post-options-list-{{ post.id }}">
+            <ul>
+              {% if request.user.id == post.user.id  %}
+                <li><a href="{% url 'post_edit' post.id %}">Edit</a></li>
+              {% endif %}
+              <li><a id="open-likes-list" data-id="{{ post.id }}">People Likes</a></li>
+              {% if request.user.id == post.user.id  %}
+                <li><a href="{% url 'post_delete' post.id %}">Delete</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+
+        <div class="post__likes" id="post-likes-{{ post.id }}">
+          <span>
+            <i class="fas fa-times" id="post-likes-btn-{{ post.id }}"></i>
+          </span>
+          <ul>
+            <p>People liked this post</p>
+            {% for user_like in users_like %}
+              <li>
+                <a class="post__user" href="{{ user_like.get_absolute_url }}">
+                  <img src="{% thumbnail user_like.profile.photo 32x32 crop %}" alt="avatar" class="post__user--img">
+                  <p class="post__user--name">{{ user_like.get_full_name }}</p>
+                </a>
+              </li>
+            {% empty %}
+            {% endfor %}
+          </ul>
+        </div>
+
+        <a class="post__user" href="{{ post.user.get_absolute_url }}">
+          <img src="{{ post.user.profile.photo.url }}" alt="avatar" class="post__user--img">
+          <p class="post__user--name">{{ post.user.get_full_name }}</p>
+        </a>
+
+        <span class="post__datetime">{{ post.created|timesince }} ago</span>
+        
+        <p class="post__caption">
+          {{ post.caption }}
+        </p>
+
+        {% if post.image %}
+          <img
+            src="{% thumbnail post.image 640x480 crop %}"
+            class="post__img"
+          />
+        {% endif %}
+
+        <div class="post__reaction">
+          <a
+            class="post__reaction--item {% if request.user not in users_like %}{% else %}post__reaction--liked{% endif %}"
+            data-id="{{ post.id }}"
+            data-action="{% if request.user in users_like %}un{% endif %}like"
+            id="like"
+          >
+            <i class="fas fa-heart"></i>
+            <p>{{ total_likes }}</p>
+          </a>
+
+          <a class="post__reaction--item" href="{{ post.get_absolute_url }}">
+            <i class="fas fa-comment"></i>
+            {{ total_comments }}
+          </a>
+        </div>
+      </div>
+      {% endwith %}
+    {% empty %}
+      {% if keyword %}
+        No posts with caption contains "{{ keyword }}"
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/post.js' %}"></script>
+{% csrf_token %}
+<script src="{% static 'js/search.js' %}"></script>
+{% endblock %}

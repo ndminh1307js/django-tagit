@@ -15,12 +15,10 @@
   <nav class="navigation">
     <a href="/"><span class="navigation__logo">T</span></a>
 
-    <form method="get">
-      <input type="text" name="search">
-      <button type="submit">
-        <i class="fa fa-search" aria-hidden="true"></i>
-      </button>
-    </form>
+    <a href="{% url 'search' %}" class="navigation__search">
+      <i class="fa fa-search" aria-hidden="true"></i>
+      Search on TagIt
+    </a>
 
     <div class="navigation__profile">
       <img src="{% thumbnail request.user.profile.photo 32x32 crop %}" alt="avatar">
